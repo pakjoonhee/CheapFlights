@@ -8,9 +8,8 @@ class AirplaneForm extends Component {
       flyingTo: "",
       departing: "",
       returning: "",
-      Rooms: "",
-      Adults: "",
-      Children: "",
+      adults: "",
+      children: "",
       addAFlight: "",
       addACar: ""
   }
@@ -30,7 +29,7 @@ class AirplaneForm extends Component {
   }
   
   dataHandler = (e) => {
-  
+    console.log(this.state)
   }
 
   render () {
@@ -57,16 +56,18 @@ class AirplaneForm extends Component {
 
         <Row>
           <Col sm={{ size: 3, offset: 1 }}>
-            <Label>Returning</Label>
+            <Label>Departing</Label>
             <Input 
-              name="returning"
+              type="date"
+              name="departing"
               placeHolder="mm/dd/yyyy" 
-              value={this.state.returning} 
+              value={this.state.departing} 
               onChange={e => this.change(e)} />
           </Col>
           <Col sm={{ size: 3 }}>
             <Label>Returning</Label>
             <Input 
+              type="date"
               name="returning"
               placeHolder="mm/dd/yyyy" 
               value={this.state.returning} 
@@ -75,7 +76,11 @@ class AirplaneForm extends Component {
           <Col xs="1"> 
             <FormGroup>
               <Label>Adults(18+)</Label>
-              <Input type="select" name="select" id="exampleSelect">
+              <Input 
+                type="select" 
+                name="adults" 
+                value={this.state.adults}
+                onChange={e => this.change(e)}>
                 {this.numberOptions()}
               </Input>
             </FormGroup>
@@ -83,14 +88,18 @@ class AirplaneForm extends Component {
           <Col xs="1.5">
             <FormGroup>
               <Label>Children (0-17)</Label>
-              <Input type="select" name="select" id="exampleSelect">
+              <Input 
+                type="select" 
+                name="children" 
+                value={this.state.children}
+                onChange={e => this.change(e)}>
                 {this.numberOptions()}
               </Input>
             </FormGroup>
           </Col>
         </Row>
         
-        <Row>
+        {/* <Row>
           <Col sm={{ size: 2, offset: 1 }}>
             <FormGroup check>
               <Label>
@@ -107,7 +116,7 @@ class AirplaneForm extends Component {
               </Label>
             </FormGroup>
           </Col>
-        </Row>
+        </Row> */}
         
         <Row>
           <Col sm={{ size: 2, offset: 1 }}>
