@@ -61,7 +61,7 @@ class App extends Component {
               value={this.state.returning} 
               onChange={e => this.change(e)} />
           </Col>
-          <Col xs="2"> 
+          <Col xs="1"> 
             <Label>Adults(18+)</Label>
             <Input type="select" name="select" id="exampleSelect">
               <option>1</option>
@@ -71,7 +71,7 @@ class App extends Component {
               <option>5</option>
             </Input>
           </Col>
-          <Col xs="2">
+          <Col xs="1.5">
             <Label>Children (0-17)</Label>
             <Input type="select" name="select" id="exampleSelect">
               <option>1</option>
@@ -83,17 +83,25 @@ class App extends Component {
           </Col>
         </Row>
         
-        <FormGroup check>
-          <Label check>
-            <Input type="checkbox" />{' '}
-            Check me out
-          </Label>
-          <Label check>
-            <Input type="checkbox" />{' '}
-            Check me out
-          </Label>
-        </FormGroup>
-        <Button color="danger">Submit</Button>
+        <Row>
+          <Col sm={{ size: 2, offset: 1 }}>
+              <FormGroup check>
+                <Label>
+                  <Input type="checkbox" />{''}
+                  Check me out
+                </Label>
+              </FormGroup>
+          </Col>
+          <Col>
+                <Label>
+                  <Input type="checkbox" />{''}
+                  Check me out
+                </Label>
+          </Col>
+        </Row>
+        
+
+        {/* <Button color="danger">Submit</Button> */}
       </Form>
     );
   }
