@@ -26,7 +26,7 @@ class App extends Component {
     return (
       <Form>
         <Row>
-          <Col xs="5">
+          <Col sm={{ size: 5, offset: 1 }}>
             <Label>Flying from</Label>
             <Input 
               name="flyingFrom"
@@ -34,7 +34,7 @@ class App extends Component {
               value={this.state.flyingFrom} 
               onChange={e => this.change(e)} />
           </Col>
-          <Col xs="5">
+          <Col sm={{ size: 5 }}>
             <Label>Flying to</Label>
             <Input 
               name="flyingTo"
@@ -45,7 +45,15 @@ class App extends Component {
         </Row>
 
         <Row>
-          <Col xs="3">
+          <Col sm={{ size: 3, offset: 1 }}>
+            <Label>Returning</Label>
+            <Input 
+              name="returning"
+              placeHolder="mm/dd/yyyy" 
+              value={this.state.returning} 
+              onChange={e => this.change(e)} />
+          </Col>
+          <Col sm={{ size: 3 }}>
             <Label>Returning</Label>
             <Input 
               name="returning"
