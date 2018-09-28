@@ -22,10 +22,18 @@ class App extends Component {
     })
   }
 
+  numberOptions = () => {
+    let options = []
+    for(let i=0; i<11; i++) {
+      options.push(<option>{`${i}`}</option>)
+    }
+    return options
+  }
+
   render() {
     return (
       <Form>
-        <Row>
+        <Row className="row">
           <Col sm={{ size: 5, offset: 1 }}>
             <Label>Flying from</Label>
             <Input 
@@ -64,21 +72,13 @@ class App extends Component {
           <Col xs="1"> 
             <Label>Adults(18+)</Label>
             <Input type="select" name="select" id="exampleSelect">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              {this.numberOptions()}
             </Input>
           </Col>
           <Col xs="1.5">
             <Label>Children (0-17)</Label>
             <Input type="select" name="select" id="exampleSelect">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              {this.numberOptions()}
             </Input>
           </Col>
         </Row>
