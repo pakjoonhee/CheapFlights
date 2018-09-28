@@ -30,6 +30,10 @@ class App extends Component {
     return options
   }
 
+  dataHandler = (e) => {
+
+  }
+
   render() {
     return (
       <Form>
@@ -70,38 +74,50 @@ class App extends Component {
               onChange={e => this.change(e)} />
           </Col>
           <Col xs="1"> 
-            <Label>Adults(18+)</Label>
-            <Input type="select" name="select" id="exampleSelect">
-              {this.numberOptions()}
-            </Input>
+            <FormGroup>
+              <Label>Adults(18+)</Label>
+              <Input type="select" name="select" id="exampleSelect">
+                {this.numberOptions()}
+              </Input>
+            </FormGroup>
           </Col>
           <Col xs="1.5">
-            <Label>Children (0-17)</Label>
-            <Input type="select" name="select" id="exampleSelect">
-              {this.numberOptions()}
-            </Input>
+            <FormGroup>
+              <Label>Children (0-17)</Label>
+              <Input type="select" name="select" id="exampleSelect">
+                {this.numberOptions()}
+              </Input>
+            </FormGroup>
           </Col>
         </Row>
         
         <Row>
           <Col sm={{ size: 2, offset: 1 }}>
-              <FormGroup check>
-                <Label>
-                  <Input type="checkbox" />{''}
-                  Check me out
-                </Label>
-              </FormGroup>
+            <FormGroup check>
+              <Label>
+                <Input type="checkbox" />{''}
+                Check me out
+              </Label>
+            </FormGroup>
           </Col>
           <Col>
-                <Label>
-                  <Input type="checkbox" />{''}
-                  Check me out
-                </Label>
+            <FormGroup check>
+              <Label>
+                <Input type="checkbox" />{''}
+                Check me out
+              </Label>
+            </FormGroup>
           </Col>
         </Row>
         
+        <Row>
+          <Col sm={{ size: 2, offset: 1 }}>
+            <Button 
+              color="danger"
+              onClick={e=> this.dataHandler(e)}>Submit</Button>
+          </Col>
+        </Row>
 
-        {/* <Button color="danger">Submit</Button> */}
       </Form>
     );
   }
