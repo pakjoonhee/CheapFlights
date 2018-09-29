@@ -34,7 +34,14 @@ class AirplaneForm extends Component {
   }
   
   render () {
+    const newto = {
+      pathname: "/airplaneSearchResults",
+      data: this.state
+    }
+
     return (
+      // console.log(new Date))
+      
       <Form>
         <Row className="row">
           <Col sm={{ size: 5, offset: 1 }}>
@@ -63,7 +70,8 @@ class AirplaneForm extends Component {
               name="departing"
               placeHolder="mm/dd/yyyy" 
               value={this.state.departing} 
-              onChange={e => this.change(e)} />
+              onChange={e => this.change(e)}
+              min="2018-10-01" />
           </Col>
           <Col sm={{ size: 3 }}>
             <Label>Returning</Label>
@@ -121,10 +129,9 @@ class AirplaneForm extends Component {
         
         <Row>
           <Col sm={{ size: 2, offset: 1 }}>
-            <Link to='/airplaneSearchResults'>
+            <Link to={newto}>
               <Button 
                 color="danger"
-                // onClick={e=> this.dataHandler()}
                 >Submit
               </Button>
             </Link>
@@ -132,6 +139,7 @@ class AirplaneForm extends Component {
         </Row>
 
       </Form>
+
     )
   }
 }

@@ -21,61 +21,71 @@ class AirplaneSearchResults extends Component {
   }
   
   componentDidMount() {
-  axios.get('https://api-crt.cert.havail.sabre.com/v1/shop/flights?origin=JFK&destination=ICN&departuredate=2018-10-07&returndate=2018-10-09&onlineitinerariesonly=N&limit=30&offset=1&eticketsonly=N&sortby=totalfare&order=asc&sortby2=departuretime&order2=asc&pointofsalecountry=US', {
-      headers: this.headers
-  }).then((response) => {
-      const jsonData = response.data.PricedItineraries
-      const promises = jsonData.map((levelOne) => {
-          const firstPromise = levelOne.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map((levelTwo) => { 
-          const secondPromise = levelTwo.FlightSegment.map((levelThree) => {
-              const hasNoKey = this.secondCall(levelThree.MarketingAirline.Code)
-              const axiosCall = (methodCall) => {
-              return methodCall
-              .then((response) => {
-                  return {
-                  airlineName: response.data.AirlineInfo,
-                  flightDetails: levelThree,
-                  totalFlightTime: levelTwo.ElapsedTime,
-                  totalFareTotals: levelOne.AirItineraryPricingInfo.ItinTotalFare
-                  }
-              })
-              }
+    let base = 'https://api-crt.cert.havail.sabre.com/v1/shop/flights'
+    let origin = '?origin=' + this.props.location.data.flyingFrom
+    let destination = '&destination=' + this.props.location.data.flyingTo
+    let departureDate = '&departuredate=' + this.props.location.data.departing
+    let returnDate = '&returndate=' + this.props.location.data.returning
+    let end = '&onlineitinerariesonly=N&limit=30&offset=1&eticketsonly=N&sortby=totalfare&order=asc&sortby2=departuretime&order2=asc&pointofsalecountry=US'
+    // if(this.props.location.)
+    let passengers = '&passengercount=' + (parseInt(this.props.location.data.children) + parseInt(this.props.location.data.adults))
+    let axiosString = base + origin + destination + departureDate + returnDate + end + passengers
   
-              if(this.airlineCodeResponse.length === 0) {
-              this.airlineCodeResponse.push({[levelThree.MarketingAirline.Code]:this.secondCall(levelThree.MarketingAirline.Code)})
-              axiosCall(hasNoKey)
-  
-              } else if(!this.airlineCodeResponse[0].hasOwnProperty(levelThree.MarketingAirline.Code)) {
-              this.airlineCodeResponse[0][levelThree.MarketingAirline.Code] = this.secondCall(levelThree.MarketingAirline.Code)
-              axiosCall(hasNoKey)
-              }
-              
-              let keys = Object.keys(this.airlineCodeResponse[0])
-              for(let j=0; j<keys.length; j++) {
-              if(levelThree.MarketingAirline.Code === keys[j]) {
-                  return this.airlineCodeResponse[0][levelThree.MarketingAirline.Code]
+    axios.get(axiosString, {
+        headers: this.headers
+    }).then((response) => {
+        const jsonData = response.data.PricedItineraries
+        const promises = jsonData.map((levelOne) => {
+            const firstPromise = levelOne.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map((levelTwo) => { 
+            const secondPromise = levelTwo.FlightSegment.map((levelThree) => {
+                const hasNoKey = this.secondCall(levelThree.MarketingAirline.Code)
+                const axiosCall = (methodCall) => {
+                  return methodCall
                   .then((response) => {
-                  return {
+                      return {
                       airlineName: response.data.AirlineInfo,
                       flightDetails: levelThree,
                       totalFlightTime: levelTwo.ElapsedTime,
                       totalFareTotals: levelOne.AirItineraryPricingInfo.ItinTotalFare
-                  }
+                      }
                   })
-              }
-              }
-              // return this.secondCall(levelThree.MarketingAirline.Code)
-          })
-          return Promise.all(secondPromise)
-          })
-          return Promise.all(firstPromise)
-      })
-      return Promise.all(promises)
-      }).then((airplaneData) => {
-      this.setState({promises: airplaneData})
-      }).catch((error) => {
-      console.log(error)
-      })
+                }
+    
+                if(this.airlineCodeResponse.length === 0) {
+                this.airlineCodeResponse.push({[levelThree.MarketingAirline.Code]:this.secondCall(levelThree.MarketingAirline.Code)})
+                axiosCall(hasNoKey)
+    
+                } else if(!this.airlineCodeResponse[0].hasOwnProperty(levelThree.MarketingAirline.Code)) {
+                this.airlineCodeResponse[0][levelThree.MarketingAirline.Code] = this.secondCall(levelThree.MarketingAirline.Code)
+                axiosCall(hasNoKey)
+                }
+                
+                let keys = Object.keys(this.airlineCodeResponse[0])
+                for(let j=0; j<keys.length; j++) {
+                if(levelThree.MarketingAirline.Code === keys[j]) {
+                    return this.airlineCodeResponse[0][levelThree.MarketingAirline.Code]
+                    .then((response) => {
+                    return {
+                        airlineName: response.data.AirlineInfo,
+                        flightDetails: levelThree,
+                        totalFlightTime: levelTwo.ElapsedTime,
+                        totalFareTotals: levelOne.AirItineraryPricingInfo.ItinTotalFare
+                    }
+                    })
+                }
+                }
+                // return this.secondCall(levelThree.MarketingAirline.Code)
+            })
+            return Promise.all(secondPromise)
+            })
+            return Promise.all(firstPromise)
+        })
+        return Promise.all(promises)
+        }).then((airplaneData) => {
+        this.setState({promises: airplaneData})
+        }).catch((error) => {
+        console.log(error)
+        })
   }
   
   calculateHours = (minutes) => {
