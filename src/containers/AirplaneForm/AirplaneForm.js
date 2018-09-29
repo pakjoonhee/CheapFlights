@@ -41,7 +41,6 @@ class AirplaneForm extends Component {
         fields["adults"] = "";
         fields["children"] = "";
         this.setState({fields:fields});
-        console.log(this.state)
         this.props.history.push(newto)
         alert("Form submitted");
     }
