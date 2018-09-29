@@ -9,7 +9,10 @@ class AirplaneForm extends Component {
   constructor() {
     super();
     this.state = {
-      fields: {},
+      fields: {
+        adults:0,
+        children:0
+      },
       errors: {}
     }
 
