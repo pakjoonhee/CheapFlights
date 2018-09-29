@@ -9,7 +9,7 @@ class AirplaneSearchResults extends Component {
 
   flightDetails = []
   airlineCodeResponse = []
-  token = 'T1RLAQIYHuJNjxknUrqtOEdYFITyWEdfFhDK22ueA0nP6SVcwNYNOgeXAADA/n1G+MjxSC3JcxQnWEzqIGk90u2I638SqSp/5D0d9otZjdtn16/KAFXJcOHmiYck46D0h2kj05wEK9SyyJZjAZ5Qn6F+i+xtAnr6CCg5or3OvHPX3YJTBJiCmV30dhnqPuqR2Fgx3+mHQiU8wGOIGpJPByRWKSNdNbqqx0PH+qNq3Oo2LGl0Cf8H/TqQcOOcDLoz8gqIaruLB02wnS/lTStsidO4m5c6Ve7mDEvQwaxQAUi/c+MVywSK5EkwSOYj';
+  token = 'T1RLAQIikSLk/X3NsiAxQUkkzIdhruv0/RCm7y/PibFW9Ruazl5fGqn8AADAnqyn/E/AoZiArLmjdzBahTox2lu0pHjlOGwQJytWBtVDPafnkLEv705CPyH2B16bqO/ZSzOCI3kpvgnSHKJVw8QRRsRefUMlBWs6tz54P6RYlbSb98FSOF/gIwjj58O+pq2/Zoc5mRxFYdxuuFdO7wJj2+Zz6B98WmEm3aHlKjxlZ+mLmO/ts2BFM2qJwAn/m1au5tN4DOE4HSxMddFHNPddZ0fG3pr5owYA3Gd0yAx8iqnaypJhe7zMawiM8qsj';
   headers = { 'Authorization': 'Bearer ' + this.token }
   
   
@@ -21,16 +21,15 @@ class AirplaneSearchResults extends Component {
   }
   
   componentDidMount() {
+    console.log(this.props)
     let base = 'https://api-crt.cert.havail.sabre.com/v1/shop/flights'
-    let origin = '?origin=' + this.props.location.data.flyingFrom
-    let destination = '&destination=' + this.props.location.data.flyingTo
-    let departureDate = '&departuredate=' + this.props.location.data.departing
-    let returnDate = '&returndate=' + this.props.location.data.returning
+    let origin = '?origin=' + this.props.location.data.fields.flyingFrom
+    let destination = '&destination=' + this.props.location.data.fields.flyingTo
+    let departureDate = '&departuredate=' + this.props.location.data.fields.departing
+    let returnDate = '&returndate=' + this.props.location.data.fields.returning
     let end = '&onlineitinerariesonly=N&limit=30&offset=1&eticketsonly=N&sortby=totalfare&order=asc&sortby2=departuretime&order2=asc&pointofsalecountry=US'
-    // if(this.props.location.)
-    let passengers = '&passengercount=' + (parseInt(this.props.location.data.children) + parseInt(this.props.location.data.adults))
+    let passengers = '&passengercount=' + (parseInt(this.props.location.data.fields.children) + parseInt(this.props.location.data.fields.adults))
     let axiosString = base + origin + destination + departureDate + returnDate + end + passengers
-  
     axios.get(axiosString, {
         headers: this.headers
     }).then((response) => {

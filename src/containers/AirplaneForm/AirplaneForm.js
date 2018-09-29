@@ -1,18 +1,116 @@
 import React, {Component} from 'react';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom'
+import './AirplaneForm.css'
+import AirplaneSearchResults from '../AirplaneSearchResults/AirplaneSearchResults';
 
 
 class AirplaneForm extends Component {
-  state = {
-    flyingFrom: "",
-    flyingTo: "",
-    departing: "",
-    returning: "",
-    adults: "",
-    children: "",
-    addAFlight: "",
-    addACar: ""
+  constructor() {
+    super();
+    this.state = {
+      fields: {},
+      errors: {}
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.submituserRegistrationForm = this.submituserRegistrationForm.bind(this);
+  };
+
+  handleChange(e) {
+    let fields = this.state.fields;
+    fields[e.target.name] = e.target.value;
+    this.setState({
+      fields
+    });
+  }
+
+  submituserRegistrationForm(e) {
+    const newto = {
+      pathname: "/airplaneSearchResults",
+      data: this.state
+    }
+
+    e.preventDefault();
+    if (this.validateForm()) {
+        let fields = {};
+        fields["flyingFrom"] = "";
+        fields["flyingTo"] = "";
+        fields["departing"] = "";
+        fields["returning"] = "";
+        fields["adults"] = "";
+        fields["children"] = "";
+        this.setState({fields:fields});
+        console.log(this.state)
+        this.props.history.push(newto)
+        alert("Form submitted");
+    }
+  }
+
+  validateForm() {
+
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+    if (!fields["flyingFrom"]) {
+      formIsValid = false;
+      errors["flyingFrom"] = "*Please enter your starting destination.";
+    }
+
+    if (typeof fields["flyingFrom"] !== "undefined") {
+      if (!fields["flyingFrom"].match(/^[a-zA-Z ]*$/)) {
+        formIsValid = false;
+        errors["flyingFrom"] = "*Please enter alphabet characters only.";
+      }
+    }
+
+    if (!fields["flyingTo"]) {
+      formIsValid = false;
+      errors["flyingTo"] = "*Please enter your destination.";
+    }
+
+    if (typeof fields["flyingTo"] !== "undefined") {
+      if (!fields["flyingTo"].match(/^[a-zA-Z ]*$/)) {
+        formIsValid = false;
+        errors["flyingTo"] = "*Please enter alphabet characters only.";
+      }
+    }
+
+    if (!fields["departing"]) {
+      formIsValid = false;
+      errors["departing"] = "*Please enter a date.";
+    }
+
+    if (typeof fields["departing"] !== "undefined") {
+      if (!fields["departing"].match(/(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/)) {
+        formIsValid = false;
+        errors["departing"] = "*Please enter alphabet characters only.";
+      }
+    }
+
+    if (!fields["returning"]) {
+      formIsValid = false;
+      errors["returning"] = "*Please enter a date.";
+    }
+
+    if (typeof fields["returning"] !== "undefined") {
+      if (!fields["returning"].match(/(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/)) {
+        formIsValid = false;
+        errors["returning"] = "*Please enter alphabet characters only.";
+      }
+    }
+
+    if (fields["adults"]===0  && fields["children"]===0) {
+      formIsValid = false;
+      errors["adults"] = "*Select Quantity.";
+      errors["children"] = "*Select Quantity.";
+    }
+
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
   }
   
   change = (e) => {
@@ -24,7 +122,7 @@ class AirplaneForm extends Component {
   numberOptions = () => {
     let options = []
     for(let i=0; i<11; i++) {
-    options.push(<option>{`${i}`}</option>)
+      options.push(<option>{`${i}`}</option>)
     }
     return options
   }
@@ -34,15 +132,9 @@ class AirplaneForm extends Component {
   }
   
   render () {
-    const newto = {
-      pathname: "/airplaneSearchResults",
-      data: this.state
-    }
-
+    
     return (
-      // console.log(new Date))
-      
-      <Form>
+      <Form method="post" name="userFlightDetails" onSubmit={this.submituserRegistrationForm}>
         <Row className="row">
           <Col sm={{ size: 5, offset: 1 }}>
             <Label>Flying from</Label>
@@ -50,7 +142,8 @@ class AirplaneForm extends Component {
               name="flyingFrom"
               placeHolder="City or airport" 
               value={this.state.flyingFrom} 
-              onChange={e => this.change(e)} />
+              onChange={this.handleChange} />
+            <div className="errorMsg">{this.state.errors.flyingFrom}</div>
           </Col>
           <Col sm={{ size: 5 }}>
             <Label>Flying to</Label>
@@ -58,7 +151,8 @@ class AirplaneForm extends Component {
               name="flyingTo"
               placeHolder="City or airport" 
               value={this.state.flyingTo} 
-              onChange={e => this.change(e)} />
+              onChange={this.handleChange} />
+            <div className="errorMsg">{this.state.errors.flyingTo}</div>
           </Col>
         </Row>
 
@@ -70,8 +164,9 @@ class AirplaneForm extends Component {
               name="departing"
               placeHolder="mm/dd/yyyy" 
               value={this.state.departing} 
-              onChange={e => this.change(e)}
+              onChange={this.handleChange}
               min="2018-10-01" />
+            <div className="errorMsg">{this.state.errors.departing}</div>
           </Col>
           <Col sm={{ size: 3 }}>
             <Label>Returning</Label>
@@ -80,7 +175,9 @@ class AirplaneForm extends Component {
               name="returning"
               placeHolder="mm/dd/yyyy" 
               value={this.state.returning} 
-              onChange={e => this.change(e)} />
+              onChange={this.handleChange} 
+              min="2018-10-01" />
+            <div className="errorMsg">{this.state.errors.returning}</div>
           </Col>
           <Col xs="1"> 
             <FormGroup>
@@ -89,9 +186,10 @@ class AirplaneForm extends Component {
                 type="select" 
                 name="adults" 
                 value={this.state.adults}
-                onChange={e => this.change(e)}>
+                onChange={this.handleChange}>
                 {this.numberOptions()}
               </Input>
+              <div className="errorMsg">{this.state.errors.adults}</div>
             </FormGroup>
           </Col>
           <Col xs="1.5">
@@ -101,43 +199,23 @@ class AirplaneForm extends Component {
                 type="select" 
                 name="children" 
                 value={this.state.children}
-                onChange={e => this.change(e)}>
+                onChange={this.handleChange}>
                 {this.numberOptions()}
               </Input>
+              <div className="errorMsg">{this.state.errors.children}</div>
             </FormGroup>
-          </Col>
-        </Row>
-        
-        {/* <Row>
-          <Col sm={{ size: 2, offset: 1 }}>
-            <FormGroup check>
-              <Label>
-                <Input type="checkbox" />{''}
-                Check me out
-              </Label>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup check>
-              <Label>
-                <Input type="checkbox" />{''}
-                Check me out
-              </Label>
-            </FormGroup>
-          </Col>
-        </Row> */}
-        
-        <Row>
-          <Col sm={{ size: 2, offset: 1 }}>
-            <Link to={newto}>
-              <Button 
-                color="danger"
-                >Submit
-              </Button>
-            </Link>
           </Col>
         </Row>
 
+        <Row>
+          <Col sm={{ size: 2, offset: 1 }}>
+            <Button
+              color="danger" 
+              type="submit" 
+              className="button"  
+              value="Register">Submit</Button>
+          </Col>
+        </Row>
       </Form>
 
     )
