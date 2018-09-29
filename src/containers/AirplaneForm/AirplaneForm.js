@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom'
 import './AirplaneForm.css'
-import AirplaneSearchResults from '../AirplaneSearchResults/AirplaneSearchResults';
-
 
 class AirplaneForm extends Component {
   constructor() {

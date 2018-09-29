@@ -61,17 +61,17 @@ class AirplaneSearchResults extends Component {
                 
                 let keys = Object.keys(this.airlineCodeResponse[0])
                 for(let j=0; j<keys.length; j++) {
-                if(levelThree.MarketingAirline.Code === keys[j]) {
+                  if(levelThree.MarketingAirline.Code === keys[j]) {
                     return this.airlineCodeResponse[0][levelThree.MarketingAirline.Code]
                     .then((response) => {
-                    return {
-                        airlineName: response.data.AirlineInfo,
-                        flightDetails: levelThree,
-                        totalFlightTime: levelTwo.ElapsedTime,
-                        totalFareTotals: levelOne.AirItineraryPricingInfo.ItinTotalFare
-                    }
+                      return {
+                          airlineName: response.data.AirlineInfo,
+                          flightDetails: levelThree,
+                          totalFlightTime: levelTwo.ElapsedTime,
+                          totalFareTotals: levelOne.AirItineraryPricingInfo.ItinTotalFare
+                      }
                     })
-                }
+                  }
                 }
                 // return this.secondCall(levelThree.MarketingAirline.Code)
             })
