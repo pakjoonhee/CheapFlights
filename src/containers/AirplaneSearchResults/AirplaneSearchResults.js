@@ -73,9 +73,8 @@ class AirplaneSearchResults extends Component {
                     })
                   }
                 }
-                // return this.secondCall(levelThree.MarketingAirline.Code)
-            })
-            return Promise.all(secondPromise)
+              })
+              return Promise.all(secondPromise)
             })
             return Promise.all(firstPromise)
         })
@@ -114,12 +113,12 @@ class AirplaneSearchResults extends Component {
   }
   
   isMultiCarrier = (airlineNames) => {
-  for(let i=1; i<airlineNames.length; i++) {
-      if(airlineNames[i].airlineName !== airlineNames[i-1].airlineName) {
-      return "Multiple Airlines"
-      }
-  }
-  return airlineNames[0].airlineName;
+    for(let i=1; i<airlineNames.length; i++) {
+        if(airlineNames[i].airlineName !== airlineNames[i-1].airlineName) {
+        return "Multiple Airlines"
+        }
+    }
+    return airlineNames[0].airlineName;
   }
   
   pushFlightDetails = (departureDateTime, arrivalDateTime, 
