@@ -8,7 +8,6 @@ class Posts extends Component {
   flightDetails = []
 
   componentDidMount() {
-    console.log(this.props.history.location.data)
     this.props.fetchPosts(this.props.history.location.data.fields)
   }
 

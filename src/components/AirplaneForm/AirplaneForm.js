@@ -126,10 +126,6 @@ class AirplaneForm extends Component {
     return options
   }
 
-  datahandler = () => {
-    console.log(this.state)
-  }
-  
   render () {
     
     return (
