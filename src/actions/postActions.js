@@ -2,23 +2,22 @@ import { FETCH_POSTS, token, end } from './types'
 import axios from 'axios'
 
 
-export const fetchPosts = (data) => dispatch => {
-
-
-   const airlineCodeResponse = []
-   const secondCall = (code) => { 
-    return axios.get('https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=' + code, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        }).then(response => {return response})
-            .catch(error => alert(error))   
-    }
+export const fetchPosts = () => dispatch => {
+  const data = JSON.parse(localStorage.getItem('airplaneDetails'))
+  const airlineCodeResponse = []
+  const secondCall = (code) => { 
+  return axios.get('https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=' + code, {
+          headers: { 'Authorization': 'Bearer ' + token }
+      }).then(response => {return response})
+          .catch(error => alert(error))   
+  }
     
   let base = 'https://api-crt.cert.havail.sabre.com/v1/shop/flights'
-  let origin = '?origin=' + data.flyingFrom
-  let destination = '&destination=' + data.flyingTo
-  let departureDate = '&departuredate=' + data.departing
-  let returnDate = '&returndate=' + data.returning
-  let passengers = '&passengercount=' + (parseInt(data.children) + parseInt(data.adults))
+  let origin = '?origin=' + data.fields.flyingFrom
+  let destination = '&destination=' + data.fields.flyingTo
+  let departureDate = '&departuredate=' + data.fields.departing
+  let returnDate = '&returndate=' + data.fields.returning
+  let passengers = '&passengercount=' + (parseInt(data.fields.children) + parseInt(data.fields.adults))
   let axiosString = base + origin + destination + departureDate + returnDate + end + passengers
 
 

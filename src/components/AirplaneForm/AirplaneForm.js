@@ -40,9 +40,9 @@ class AirplaneForm extends Component {
         fields["returning"] = "";
         fields["adults"] = "";
         fields["children"] = "";
+        localStorage.setItem('airplaneDetails', JSON.stringify(this.state))
         this.setState({fields:fields});
         this.props.history.push(newto)
-        alert("Form submitted");
     }
   }
 

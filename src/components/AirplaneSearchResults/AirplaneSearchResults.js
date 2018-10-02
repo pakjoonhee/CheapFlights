@@ -8,7 +8,7 @@ class Posts extends Component {
   flightDetails = []
 
   componentDidMount() {
-    this.props.fetchPosts(this.props.history.location.data.fields)
+    this.props.fetchPosts()
   }
 
   calculateHours = (minutes) => {
