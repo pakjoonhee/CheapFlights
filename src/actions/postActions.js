@@ -1,8 +1,10 @@
-import { FETCH_POSTS, NEW_POST } from './types'
+import { FETCH_POSTS, token, end } from './types'
 import axios from 'axios'
 
 
-export const fetchPosts = () => dispatch => {
+export const fetchPosts = (data) => dispatch => {
+
+
    const airlineCodeResponse = []
    const secondCall = (code) => { 
     return axios.get('https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=' + code, {
@@ -10,10 +12,17 @@ export const fetchPosts = () => dispatch => {
         }).then(response => {return response})
             .catch(error => alert(error))   
     }
+    
+  let base = 'https://api-crt.cert.havail.sabre.com/v1/shop/flights'
+  let origin = '?origin=' + data.flyingFrom
+  let destination = '&destination=' + data.flyingTo
+  let departureDate = '&departuredate=' + data.departing
+  let returnDate = '&returndate=' + data.returning
+  let passengers = '&passengercount=' + (parseInt(data.children) + parseInt(data.adults))
+  let axiosString = base + origin + destination + departureDate + returnDate + end + passengers
 
-  console.log("fetching")
-  const token = 'T1RLAQIikSLk/X3NsiAxQUkkzIdhruv0/RCm7y/PibFW9Ruazl5fGqn8AADAnqyn/E/AoZiArLmjdzBahTox2lu0pHjlOGwQJytWBtVDPafnkLEv705CPyH2B16bqO/ZSzOCI3kpvgnSHKJVw8QRRsRefUMlBWs6tz54P6RYlbSb98FSOF/gIwjj58O+pq2/Zoc5mRxFYdxuuFdO7wJj2+Zz6B98WmEm3aHlKjxlZ+mLmO/ts2BFM2qJwAn/m1au5tN4DOE4HSxMddFHNPddZ0fG3pr5owYA3Gd0yAx8iqnaypJhe7zMawiM8qsj';
-  axios.get('https://api-crt.cert.havail.sabre.com/v1/shop/flights?origin=JFK&destination=ICN&departuredate=2018-10-07&returndate=2018-10-09&onlineitinerariesonly=N&limit=30&offset=1&eticketsonly=N&sortby=totalfare&order=asc&sortby2=departuretime&order2=asc&pointofsalecountry=US' ,{
+
+  axios.get(axiosString,{
     headers: { 'Authorization': 'Bearer ' + token }
   }).then((response) => {
     const jsonData = response.data.PricedItineraries
@@ -66,7 +75,7 @@ export const fetchPosts = () => dispatch => {
       dispatch({
         type: FETCH_POSTS,
         payload: posts
-      }, console.log(posts))
+      })
     );
 };
 

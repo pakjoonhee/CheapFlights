@@ -8,7 +8,8 @@ class Posts extends Component {
   flightDetails = []
 
   componentDidMount() {
-    this.props.fetchPosts()
+    console.log(this.props.history.location.data)
+    this.props.fetchPosts(this.props.history.location.data.fields)
   }
 
   calculateHours = (minutes) => {
@@ -17,17 +18,17 @@ class Posts extends Component {
     return Math.round(hours) + " Hours " + mins + " Mins";
     }
     
-    popArray = (array) => {
-    let cities = "";
-    for(let i=0; i<array.length - 1; i++) {
-        cities += array[i].arrivalAirport + " "
-    }
-    return cities;
-    }
-    
-    countFlightSegment = (num) => {
-    if(num === 1) {
-        return "nonstop"
+  popArray = (array) => {
+  let cities = "";
+  for(let i=0; i<array.length - 1; i++) {
+      cities += array[i].arrivalAirport + " "
+  }
+  return cities;
+  }
+  
+  countFlightSegment = (num) => {
+  if(num === 1) {
+      return "nonstop"
     } else {
         if(num - 1 === 1) {
         return 1 + " Stop"
@@ -35,22 +36,22 @@ class Posts extends Component {
         return (num - 1) + " Stops"
         }
     }
+  }
+  
+  isMultiCarrier = (airlineNames) => {
+    for(let i=1; i<airlineNames.length; i++) {
+        if(airlineNames[i].airlineName !== airlineNames[i-1].airlineName) {
+        return "Multiple Airlines"
+        }
     }
-    
-    isMultiCarrier = (airlineNames) => {
-      for(let i=1; i<airlineNames.length; i++) {
-          if(airlineNames[i].airlineName !== airlineNames[i-1].airlineName) {
-          return "Multiple Airlines"
-          }
-      }
-      return airlineNames[0].airlineName;
-    }
-    
-    pushFlightDetails = (departureDateTime, arrivalDateTime, 
-    airlineName, departureAirport, arrivalAirport) => {
-        this.flightDetails.push({departureDateTime:departureDateTime, arrivalDateTime:arrivalDateTime,
-        airlineName:airlineName, departureAirport:departureAirport, arrivalAirport:arrivalAirport})
-    }
+    return airlineNames[0].airlineName;
+  }
+  
+  pushFlightDetails = (departureDateTime, arrivalDateTime, 
+  airlineName, departureAirport, arrivalAirport) => {
+      this.flightDetails.push({departureDateTime:departureDateTime, arrivalDateTime:arrivalDateTime,
+      airlineName:airlineName, departureAirport:departureAirport, arrivalAirport:arrivalAirport})
+  }
   
   render() {
     let details = this.props.posts
