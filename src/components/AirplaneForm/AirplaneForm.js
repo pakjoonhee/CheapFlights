@@ -5,12 +5,14 @@ import './AirplaneForm.css'
 class AirplaneForm extends Component {
   constructor() {
     super();
+
     this.state = {
       fields: {
         adults:0,
         children:0
       },
-      errors: {}
+      errors: {},
+      calendar: {}
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -119,11 +121,29 @@ class AirplaneForm extends Component {
   }
   
   numberOptions = () => {
-    let options = []
+    let numbers = []
     for(let i=0; i<11; i++) {
-      options.push(<option>{`${i}`}</option>)
+      numbers.push(<option>{`${i}`}</option>)
     }
-    return options
+    return numbers
+  }
+
+  minDate = () => {
+    var today = new Date()
+    var dd = today.getDate()
+    var mm = today.getMonth()+1
+    var yyyy = today.getFullYear()
+
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+
+    today = yyyy + '-' + mm + '-' + dd
+    return today
   }
 
   render () {
@@ -160,7 +180,7 @@ class AirplaneForm extends Component {
               placeHolder="mm/dd/yyyy" 
               value={this.state.departing} 
               onChange={this.handleChange}
-              min="2018-10-01" />
+              min={this.minDate()} />
             <div className="errorMsg">{this.state.errors.departing}</div>
           </Col>
           <Col sm={{ size: 3 }}>
@@ -171,7 +191,7 @@ class AirplaneForm extends Component {
               placeHolder="mm/dd/yyyy" 
               value={this.state.returning} 
               onChange={this.handleChange} 
-              min="2018-10-01" />
+              min={this.minDate()} />
             <div className="errorMsg">{this.state.errors.returning}</div>
           </Col>
           <Col xs="1"> 
